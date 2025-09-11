@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Process Dashboard</title>
+  <link rel="stylesheet" href="document.css">
+</head>
+<body>
+  <main class="wrap">
+    <!-- White Navigation Bar -->
+     <nav class="navbar">
+  <div class="brand">LedoScan</div>
+  <ul class="nav-links">
+    <li><a href="main.html">Home</a></li>
+    <li><a href="compare.html">Compare</a></li>
+    <li><a href="document.html"class="active">Document</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+  
+  <div class="nav-actions">
+    <button class="nav-btn btn-outline">Sign In</button>
+    <button class="nav-btn btn-gradient">Sign Up</button>
+  </div>
+</nav>
+
+    <nav class="navbar">
+      <div class="nav-left">
+        <div class="title">
+          Check What Documents <span class="highlight">Are Required</span>
+        </div>
+        <div class="sub">
+          Search, filter, and start any process — organized neatly by category.
+        </div>
+      </div>
+      <div class="toolbar" role="search">
+        <label class="input" aria-label="Search processes">
+          <span>🔎</span>
+          <input id="searchInput" type="search" placeholder="Search processes (e.g., GST, Passport, Property)…" autocomplete="off" />
+        </label>
+        <label class="select" aria-label="Filter by category">
+          <span>🗂</span>
+          <select id="categoryFilter">
+            <option value="All" selected>All categories</option>
+            <option>Property</option>
+            <option>Business</option>
+            <option>Tax</option>
+            <option>Legal</option>
+            <option>Personal</option>
+            <option>Finance</option>
+            <option>Others</option>
+          </select>
+        </label>
+      </div>
+    </nav>
+
+    <!-- Categories will be injected here -->
+    <section id="categories"></section>
+
+    <p class="foot">©️ 2025 LedoScan. All rights reserved.</p>
+  </main>
+
+  <!-- Modal -->
+  <div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="md-title">
+    <div class="dialog" role="document">
+      <header>
+        <div>
+          <h3 id="md-title"></h3>
+          <div id="md-cat" class="cat"></div>
+        </div>
+        <button id="md-close" class="btn" aria-label="Close">Close</button>
+      </header>
+      <div class="body">
+        <p id="md-desc"></p>
+        <ol id="md-docs" class="doclist"></ol>
+        <div class="source">Source: <a id="md-source" href="#" target="_blank" rel="noopener">Official site</a></div>
+        <div class="copy">Note: Requirements can vary by state/ULB. Always cross-check the linked official page before applying.</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="document.js"></script>
+</body>
+</html>

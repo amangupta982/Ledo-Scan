@@ -1,0 +1,201 @@
+<!-- compare.html -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Document Compare</title>
+  <link rel="stylesheet" href="compare.css" />
+</head>
+<!-- Navbar (copied design from first page) -->
+<nav id="navbar">
+  <div class="logo">LedoScan</div>
+
+  <ul class="nav-links">
+    <li><a href="main.html">Home</a></li>
+    <li><a href="compare.html" class="active" aria-current="page">Compare</a></li>
+    <li><a href="document.html">Document</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+
+  <div class="auth-top">
+    <button class="btn-outline nav-btn" id="signInShow">Sign In</button>
+    <button class="btn-gradient nav-btn" id="signUpShow">Sign Up</button>
+  </div>
+</nav>
+
+    <!-- Hero -->
+    <section class="hero">
+      <h1>Compare Your Documents <span class="accent">Instantly</span></h1>
+      <p class="sub">Upload, drag & drop, or scan two documents to see differences, similarities, and changes in seconds.</p>
+    </section>
+
+    <!-- Upload Section -->
+    <section class="upload-section">
+      <h2 class="section-title">Ready to Compare?</h2>
+
+      <div class="upload-grid">
+        <!-- Document 1 -->
+        <div class="upload-card" id="card1">
+          <h3>Document 1</h3>
+
+          <div class="button-row">
+            <button class="btn btn-dark ghost" data-scan="1" type="button">
+              <!-- Scanner icon -->
+              <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 13h18v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-6Zm0-2l14.74 0L5.11 4.39A2 2 0 0 0 2.39 7.1L7.9 11H3Z"/></svg>
+              Scan Document
+            </button>
+            <button class="btn btn-primary" data-upload="1" type="button">
+              <!-- Upload icon -->
+              <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3l4 4h-3v6h-2V7H8l4-4Zm-7 14h14v2H5v-2Z"/></svg>
+              Upload File
+            </button>
+            <input id="file1" type="file" accept=".txt,.md,.csv,.json" class="hidden-input" />
+          </div>
+
+          <div class="dropzone" id="drop1" tabindex="0" aria-label="Drop files for Document 1">
+            <div class="dz-inner">
+              <div class="dz-icon">⬆</div>
+              <p>Drag & Drop file here</p>
+              <small>or click “Upload File”</small>
+            </div>
+          </div>
+
+          <p class="file-meta" id="meta1">No file selected</p>
+        </div>
+
+        <!-- Document 2 -->
+        <div class="upload-card" id="card2">
+          <h3>Document 2</h3>
+
+          <div class="button-row">
+            <button class="btn btn-dark ghost" data-scan="2" type="button">
+              <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 13h18v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-6Zm0-2l14.74 0L5.11 4.39A2 2 0 0 0 2.39 7.1L7.9 11H3Z"/></svg>
+              Scan Document
+            </button>
+            <button class="btn btn-primary" data-upload="2" type="button">
+              <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3l4 4h-3v6h-2V7H8l4-4Zm-7 14h14v2H5v-2Z"/></svg>
+              Upload File
+            </button>
+            <input id="file2" type="file" accept=".txt,.md,.csv,.json" class="hidden-input" />
+          </div>
+
+          <div class="dropzone" id="drop2" tabindex="0" aria-label="Drop files for Document 2">
+            <div class="dz-inner">
+              <div class="dz-icon">⬆</div>
+              <p>Drag & Drop file here</p>
+              <small>or click “Upload File”</small>
+            </div>
+          </div>
+
+          <p class="file-meta" id="meta2">No file selected</p>
+        </div>
+      </div>
+
+      <div class="cta-row">
+        <button id="compareBtn" class="btn btn-cta" type="button">Compare Documents Now</button>
+      </div>
+    </section>
+
+    <!-- Results Section -->
+    <section id="results" class="results hidden" aria-live="polite">
+      <h2 class="section-title">Results</h2>
+
+      <div class="legend">
+        <span class="tag added">Added</span>
+        <span class="tag removed">Removed</span>
+        <span class="tag modified">Modified</span>
+      </div>
+
+      <div class="preview-grid">
+        <article class="preview-card">
+          <header><h3>Document 1 Preview</h3></header>
+          <div id="preview1" class="preview-content" aria-label="Document 1 preview"></div>
+        </article>
+
+        <article class="preview-card">
+          <header><h3>Document 2 Preview</h3></header>
+          <div id="preview2" class="preview-content" aria-label="Document 2 preview"></div>
+        </article>
+      </div>
+
+      <div class="summary-card" id="summaryCard">
+        <div class="summary-head">
+          <h3>Summary</h3>
+          <div class="score">
+            <span id="similarity">0%</span>
+            <small>Similarity</small>
+          </div>
+        </div>
+        <ul id="keyDiffs" class="key-diffs"></ul>
+        <div class="suggested">
+          Suggested better document: <strong id="suggestedDoc">—</strong>
+        </div>
+
+        <div class="summary-actions">
+          <button id="downloadBtn" class="btn btn-secondary" type="button">Download Report (PDF)</button>
+          <button id="recompareBtn" class="btn ghost" type="button">Re-Compare</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="why">
+      <h2 class="section-title">Why Choose Us?</h2>
+      <div class="why-grid">
+        <div class="why-card">
+          <div class="why-icon">⚡</div>
+          <h3>Lightning Fast</h3>
+          <p>Drag‑and‑drop plus instant in‑browser processing gives near‑instant feedback without page reloads.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">🗂</div>
+          <h3>Multiple Formats</h3>
+          <p>Supports common text formats like TXT, MD, CSV, and JSON for quick side‑by‑side checks.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">✔</div>
+          <h3>Precise Results</h3>
+          <p>Color cues highlight additions, removals, and modifications for fast visual scanning.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq">
+      <h2 class="section-title">FAQ</h2>
+
+      <details>
+        <summary>What file types are supported?</summary>
+        <p>Text formats such as .txt, .md, .csv, and .json are supported for preview and dummy comparisons.</p>
+      </details>
+
+      <details>
+        <summary>Is drag & drop supported?</summary>
+        <p>Yes, drop zones accept files and use the HTML Drag and Drop API with dragover and drop handlers.</p>
+      </details>
+
+      <details>
+        <summary>How are differences calculated?</summary>
+        <p>A lightweight in‑browser routine tokenizes text and highlights basic added, removed, and modified words.</p>
+      </details>
+
+      <details>
+        <summary>Is it secure?</summary>
+        <p>All logic runs in the browser; printing the report uses the system’s print dialog where users can save as PDF.</p>
+      </details>
+
+      <details>
+        <summary>Does it support dark mode?</summary>
+        <p>Yes, it honors the system preference and lets users toggle a persistent theme using local storage.</p>
+      </details>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>©️ 2025 LedoCompare — Built for clarity and speed.</p>
+  </footer>
+
+  <script src="compare.js"></script>
+</body>
+</html>
