@@ -10,22 +10,22 @@
   <script src="main.js" defer></script>
 </head>
 <body>
-  <!-- Navbar -->
   <nav id="navbar">
     <div class="logo">LedoScan</div>
     <ul class="nav-links">
-    <li><a href="main.html">Home</a></li>
-    <li><a href="compare.html">Compare</a></li>
-    <li><a href="document.html">Document</a></li>
-    <li><a href="about.html">About</a></li>
-</ul>
+
+      <li><a href="main.html"class="active" aria-current="page">Home</a></li>
+      <li><a href="compare.html">Compare</a></li>
+      <li><a href="document.html">Document</a></li>
+      <li><a href="connect.html" >Connect</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
     <div class="auth-top">
       <button class="btn-outline nav-btn" id="signInShow">Sign In</button>
       <button class="btn-gradient nav-btn" id="signUpShow">Sign Up</button>
     </div>
   </nav>
 
-  <!-- Hero Section (Scan/Upload) -->
   <section class="hero">
     <h1>Scan or Upload – <span>Your Documents, Smarter</span></h1>
     <p class="hero-text">
@@ -38,65 +38,58 @@
       <div id="drop-area">
         <label for="fileElem" class="upload-label">
           <span><i class="fa-solid fa-cloud-arrow-up"></i> <strong>Upload Document</strong></span>
-          <input type="file" id="fileElem" multiple hidden>
+          <input type="file" id="fileElem" accept=".pdf" hidden>
         </label>
-        <p class="upload-desc">Drag & drop files here</p>
+        <p class="upload-desc">Drag & drop PDF here</p>
       </div>
     </div>
-    <!-- Add the new button here -->
-  <div class="get-started-btn-wrapper">
-    <button class="get-started-btn" id="getStartedBtn">Get Started Instantly</button>
-  </div>
-  <div id="results-area" class="results-area" style="display: none;">
-      <h3>Analysis Complete!</h3>
-      <p id="risk-summary-text"></p>
-      <div class="results-links">
-        <a href="#" id="highlighted-pdf-link" target="_blank" class="btn-gradient">View Highlighted PDF</a>
-        <a href="#" id="summary-pdf-link" target="_blank" class="btn-outline">View Summary PDF</a>
-      </div>
+    <div class="get-started-btn-wrapper">
+      <button id="getStartedBtn" class="get-started-btn">Get Started Instantly</button>
     </div>
   </section>
-  </section>
 
-  <!-- Camera Preview Modal -->
-  <div class="modal" id="cameraModal" style="display:none;">
-    <div class="modal-content camera-modal-content">
-      <span class="close" id="closeCamera">&times;</span>
-      <h2>Camera Scan</h2>
-      <video id="video" autoplay playsinline></video>
-      <canvas id="canvas" style="display:none;"></canvas>
-      <div class="camera-buttons">
-        <button id="captureBtn" class="btn-gradient">Capture</button>
-        <button id="retakeBtn" class="btn-outline" style="display:none;">Retake</button>
-        <button id="saveBtn" class="btn-gradient" style="display:none;">Save Scan</button>
-      </div>
-      <p id="scanResultMsg" style="font-weight:bold; margin-top:0.5em;"></p>
-    </div>
-  </div>
-
-
-   <!-- Auth Popup Modal -->
-  <div class="modal" id="authModal" style="display:none;">
-    <div class="modal-content auth-modal-content">
-      <span class="close" id="closeAuth">&times;</span>
-      <h2 id="authTitle">Sign In</h2>
-      <form id="authForm" class="auth-form">
-        <div class="auth-fields">
-          <input type="email" id="authEmail" placeholder="Email" required>
-          <input type="password" id="authPassword" placeholder="Password" required>
+  <section id="analysis-results" class="analysis-section" style="display: none;">
+    <h2 id="analysis-filename">Analysis for: property_sale_agreement.pdf</h2>
+    <div class="results-container">
+      <div class="pdf-view-container">
+        <div class="tabs">
+          <button class="tab-button active" data-tab="highlighted">Highlighted Document</button>
+          <button class="tab-button" data-tab="summary">Summary Report</button>
         </div>
-        <button type="submit" class="btn-gradient modal-action-btn">Continue</button>
-      </form>
-      <div class="divider"><span>or</span></div>
-      <div class="auth-social">
-        <button class="btn-google"><i class="fa-brands fa-google"></i> Continue with Google</button>
-        <button class="btn-phone"><i class="fa-solid fa-phone"></i> Continue with Phone No</button>
+        <div id="highlighted-content" class="tab-content active">
+          <div class="pdf-embed-wrapper">
+            <embed id="highlightedPreview" src="" type="application/pdf" />
+          </div>
+          <a id="highlightedDownload" href="#" download="highlighted.pdf" class="btn-gradient download-btn">Download</a>
+        </div>
+        <div id="summary-content" class="tab-content">
+           <div class="pdf-embed-wrapper">
+            <embed id="summaryPreview" src="" type="application/pdf" />
+          </div>
+          <a id="summaryDownload" href="#" download="summary.pdf" class="btn-gradient download-btn">Download</a>
+        </div>
       </div>
-      <p class="auth-switch" id="switchAuthMode">New user? <a href="#" id="signUpLink">Sign Up</a></p>
+      <div class="charts-container">
+        <div class="chart-card">
+          <div class="doughnut-chart-container">
+            <div id="risk-chart" class="doughnut-chart"></div>
+            <div class="chart-center-text">
+              <span id="total-clauses-chart">0</span>
+              <span>Total Clauses</span>
+            </div>
+          </div>
+          <div id="chart-legend" class="chart-legend">
+            </div>
+        </div>
+      </div>
     </div>
-  </div>
+    <div class="clause-breakdown">
+      <h3>Clause-by-Clause Breakdown</h3>
+      <div id="clause-list">
+        </div>
+    </div>
+  </section>
 
-   <!-- Features Section -->
   <section class="features">
     <div class="feature-card">
       <i class="fa-solid fa-bolt"></i>
@@ -119,56 +112,99 @@
       <p>End-to-end encrypted storage</p>
     </div>
   </section>
-
-  <!-- Testimonials -->
-  <section class="testimonials">
-    <h2>What Users Say</h2>
-    <div class="testimonial-card">
-      <p>"LedoScan made my work paperless and secure. Highly recommended!"</p>
-      <span>- Priya M, Lawyer</span>
-    </div>
-    <div class="testimonial-card">
-      <p>"Fast and super easy. I use it for all my college projects!"</p>
-      <span>- Arjun S, Student</span>
-    </div>
-  </section>
-
-  <!-- FAQ Section -->
-  <section class="faq">
-    <h2>Frequently Asked Questions</h2>
-    <div class="accordion">
-      <div class="faq-item">
-        <button class="faq-question">How does scanning work?</button>
-        <div class="faq-answer">
-          You can use your camera or upload files. LedoScan processes your documents using advanced algorithms for speed and quality.
-        </div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-question">Is my data secure?</button>
-        <div class="faq-answer">
-          All your documents are end-to-end encrypted and accessible only by you. We prioritize data privacy and security.
-        </div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-question">Which file formats are supported?</button>
-        <div class="faq-answer">
-          LedoScan supports PDF, DOCX, JPG, PNG, and other common formats for scanning and upload.
-        </div>
+  
+  <footer class="site-footer">
+  <div class="footer-main">
+    <div class="footer-column about">
+      <h3 class="footer-logo">LedoScan</h3>
+      <p>Making documents smarter and simpler. Analyze, compare, and secure your documents with cutting-edge technology.</p>
+      <div class="footer-socials">
+        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
       </div>
     </div>
-  </section>
 
-  <!-- Footer -->
-  <footer>
-    <div class="footer-social">
-      <a href="https://www.linkedin.com/in/aman-gupta-b617772a6"><i class="fab fa-linkedin"></i></a>
-      <a href="#"><i class="fab fa-twitter"></i></a>
-      <a href="#"><i class="fab fa-github"></i></a>
+    <div class="footer-column links">
+      <h5>Product</h5>
+      <ul>
+        <li><a href="main.html">Home</a></li>
+        <li><a href="compare.html">Compare</a></li>
+        <li><a href="document.html">Document Analysis</a></li>
+        <li><a href="#">Features</a></li>
+      </ul>
     </div>
-    <div class="footer-info">
-      <span>©️ 2025 LedoScan. All rights reserved.</span>
-      <a href="Term.html">Privacy Policy & Terms</a> 
+
+    <div class="footer-column links">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
     </div>
-  </footer>
+
+    <div class="footer-column links">
+      <h5>Resources</h5>
+      <ul>
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#">Help Center</a></li>
+        <li><a href="Term.html">Privacy & Terms</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2025 LedoScan. All rights reserved.</p>
+  </div>
+</footer>
+
+  <div class="auth-modal-overlay" id="signInModal">
+  <div class="auth-modal-content">
+    <button class="close-btn" aria-label="Close">&times;</button>
+    <h3>Welcome Back!</h3>
+    <p>Sign in to access your account.</p>
+    <form class="auth-form">
+      <div class="form-group">
+        <label for="signin-email">Email Address</label>
+        <input type="email" id="signin-email" placeholder="you@example.com" required>
+      </div>
+      <div class="form-group">
+        <label for="signin-password">Password</label>
+        <input type="password" id="signin-password" placeholder="••••••••" required>
+      </div>
+      <button type="submit" class="btn-gradient form-btn">Sign In</button>
+    </form>
+    <p class="switch-form-text">
+      New to LedoScan? <a href="#" id="switchToSignUp">Sign Up Now</a>
+    </p>
+  </div>
+</div>
+
+<div class="auth-modal-overlay" id="signUpModal">
+  <div class="auth-modal-content">
+    <button class="close-btn" aria-label="Close">&times;</button>
+    <h3>Create Your Account</h3>
+    <p>Get started with LedoScan in seconds.</p>
+    <form class="auth-form">
+      <div class="form-group">
+        <label for="signup-name">Full Name</label>
+        <input type="text" id="signup-name" placeholder="John Doe" required>
+      </div>
+      <div class="form-group">
+        <label for="signup-email">Email Address</label>
+        <input type="email" id="signup-email" placeholder="you@example.com" required>
+      </div>
+      <div class="form-group">
+        <label for="signup-password">Password</label>
+        <input type="password" id="signup-password" placeholder="Minimum 8 characters" required>
+      </div>
+      <button type="submit" class="btn-gradient form-btn">Create Account</button>
+    </form>
+    <p class="switch-form-text">
+      Already have an account? <a href="#" id="switchToSignIn">Sign In</a>
+    </p>
+  </div>
+</div>
 </body>
 </html>

@@ -7,24 +7,23 @@
   <link rel="stylesheet" href="document.css">
 </head>
 <body>
-  <main class="wrap">
-    <!-- White Navigation Bar -->
-     <nav class="navbar">
-  <div class="brand">LedoScan</div>
+  <!-- Unified Navbar -->
+<nav id="navbar">
+  <div class="logo">LedoScan</div>
   <ul class="nav-links">
     <li><a href="main.html">Home</a></li>
     <li><a href="compare.html">Compare</a></li>
-    <li><a href="document.html"class="active">Document</a></li>
+    <li><a href="document.html" class="active">Document</a></li>
+    <li><a href="connect.html">Connect</a></li>
     <li><a href="about.html">About</a></li>
   </ul>
-  
-  <div class="nav-actions">
-    <button class="nav-btn btn-outline">Sign In</button>
-    <button class="nav-btn btn-gradient">Sign Up</button>
+  <div class="auth-top">
+    <button class="btn-outline nav-btn">Sign In</button>
+    <button class="btn-gradient nav-btn">Sign Up</button>
   </div>
 </nav>
 
-    <nav class="navbar">
+<nav class="navbar">
       <div class="nav-left">
         <div class="title">
           Check What Documents <span class="highlight">Are Required</span>
@@ -39,7 +38,7 @@
           <input id="searchInput" type="search" placeholder="Search processes (e.g., GST, Passport, Property)…" autocomplete="off" />
         </label>
         <label class="select" aria-label="Filter by category">
-          <span>🗂</span>
+          <span>🗃️</span>
           <select id="categoryFilter">
             <option value="All" selected>All categories</option>
             <option>Property</option>
@@ -57,7 +56,7 @@
     <!-- Categories will be injected here -->
     <section id="categories"></section>
 
-    <p class="foot">©️ 2025 LedoScan. All rights reserved.</p>
+    <p class="foot">© 2025 LedoScan. All rights reserved.</p>
   </main>
 
   <!-- Modal -->

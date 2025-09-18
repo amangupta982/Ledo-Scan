@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LedoScan - Connect</title>
+  <link rel="stylesheet" href="connect.css" />
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <script src="connect.js" defer></script>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav id="navbar">
+    <div class="logo">LedoScan</div>
+    <ul class="nav-links">
+      <li><a href="main.html">Home</a></li>
+      <li><a href="compare.html">Compare</a></li>
+      <li><a href="document.html">Document</a></li>
+      <li><a href="connect.html" class="active">Connect</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+    <div class="auth-top">
+      <button class="btn-outline nav-btn" id="signInShow">Sign In</button>
+      <button class="btn-gradient nav-btn" id="signUpShow">Sign Up</button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>One-to-One <span>Legal Consultation</span></h1>
+    <p class="hero-text">
+      Connect directly with verified legal professionals for personalized consultation and document review services.
+    </p>
+
+    <div class="option-cards">
+      <div id="user-btn" class="option-card">
+        <i class="fa-solid fa-user icon"></i>
+        <h3>User</h3>
+        <p>Get expert legal advice and document review</p>
+      </div>
+      <div id="lawyer-btn" class="option-card">
+        <i class="fa-solid fa-scale-balanced icon"></i>
+        <h3>Lawyer</h3>
+        <p>Expand your practice and connect with clients</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Login Section -->
+  <section id="login-section" class="login hidden">
+    <div class="login-box">
+      <h2 id="login-title">User Sign In</h2>
+      <form>
+        <input type="email" placeholder="Email" required />
+        <input type="password" placeholder="Password" required />
+        <button type="submit" class="btn-gradient">Sign In</button>
+      </form>
+
+      <div class="divider"><span>or</span></div>
+
+      <button class="btn-google"><i class="fa-brands fa-google"></i> Continue with Google</button>
+      <button class="btn-phone"><i class="fa-solid fa-phone"></i> Continue with Phone No</button>
+
+      <p class="auth-switch">Don’t have an account? <a href="#">Create one</a></p>
+      <button id="back-btn" class="btn-outline">← Back</button>
+    </div>
+  </section>
+    <!-- User Interface Section -->
+  <!-- User Interface Section -->
+<section id="user-interface" class="hidden">
+  <div class="interface-box">
+    <h2>Request Legal Consultation</h2>
+    <textarea id="request-message" placeholder="Describe your issue..."></textarea>
+
+    <!-- File upload -->
+    <input type="file" id="request-file" />
+    <p id="file-name" class="file-name"></p>
+
+    <button id="send-request" class="btn-gradient">Send Request</button>
+    <p id="request-status" class="status-msg"></p>
+  </div>
+</section>
+
+
+  <!-- Lawyer Interface Section -->
+  <section id="lawyer-interface" class="hidden">
+    <div class="interface-box">
+      <h2>Incoming Requests</h2>
+      <div id="requests-list" class="requests-list">
+        <!-- Requests will appear here -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-social">
+      <a href="#"><i class="fab fa-linkedin"></i></a>
+      <a href="#"><i class="fab fa-twitter"></i></a>
+      <a href="#"><i class="fab fa-github"></i></a>
+    </div>
+    <div class="footer-info">
+      <span>© 2025 LedoScan. All rights reserved.</span>
+      <a href="Term.html">Privacy Policy & Terms</a> 
+    </div>
+  </footer>
+</body>
+</html>

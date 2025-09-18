@@ -1,262 +1,218 @@
-// Wait until the entire HTML document is loaded before running the script
 document.addEventListener("DOMContentLoaded", function () {
-  
-  // --- DOM Element Selections ---
-  // FAQ
-  const faqQuestions = document.querySelectorAll(".faq-question");
-
-  // Drag & Drop Upload
+  // --- DOM Elements ---
   const dropArea = document.getElementById("drop-area");
-  const fileElem = document.getElementById("fileElem");
-  
-  // Results Display
-  const resultsArea = document.getElementById("results-area");
-  const riskSummaryText = document.getElementById("risk-summary-text");
-  const highlightedPdfLink = document.getElementById("highlighted-pdf-link");
-  const summaryPdfLink = document.getElementById("summary-pdf-link");
-
-  // Camera Scan
+  const getStartedBtn = document.getElementById("getStartedBtn");
+  const analysisSection = document.getElementById("analysis-results");
   const scanNowBtn = document.getElementById("scanNowBtn");
-  const scanInput = document.getElementById("scanInput");
-  const cameraModal = document.getElementById("cameraModal");
-  const closeCameraBtn = document.getElementById("closeCamera");
-  const video = document.getElementById("video");
-  const canvas = document.getElementById("canvas");
-  const captureBtn = document.getElementById("captureBtn");
-  const retakeBtn = document.getElementById("retakeBtn");
-  const saveBtn = document.getElementById("saveBtn");
-  const scanResultMsg = document.getElementById("scanResultMsg");
+  let lastUploadedFile = null;
 
-  // Auth Modal
-  const authModal = document.getElementById("authModal");
-  const signInShow = document.getElementById("signInShow");
-  const signUpShow = document.getElementById("signUpShow");
-  const closeAuth = document.getElementById("closeAuth");
-  const authTitle = document.getElementById("authTitle");
-  const authForm = document.getElementById("authForm");
-  const switchAuthMode = document.getElementById("switchAuthMode");
-  const signUpLink = document.getElementById("signUpLink");
-  const btnGoogle = document.querySelector(".btn-google");
-  const btnPhone = document.querySelector(".btn-phone");
+  // Store Original Drop Area HTML for the reset functionality
+  const originalDropAreaHTML = dropArea.innerHTML;
 
-  // --- Global Variables ---
-  let stream; // For the camera stream
-
-  // --- Functions ---
-
+  // --- File Handling ---
   function handleFiles(files) {
     const file = files[0];
-    if (!file) return;
-
-    // Show a loading state
-    if (dropArea) dropArea.innerHTML = `<p class="upload-desc">⏳ Analyzing, please wait...</p>`;
-    if (resultsArea) resultsArea.style.display = "none";
-
-    const formData = new FormData();
-    formData.append("file", file);
-
-    fetch("http://127.0.0.1:5000/analyze", {
-      method: "POST",
-      body: formData,
-    })
-      .then((res) => {
-        if (!res.ok) {
-          return res.json().then(err => Promise.reject(err));
-        }
-        return res.json();
-      })
-      .then((data) => {
-        if (data.success) {
-          if (riskSummaryText) {
-            riskSummaryText.innerText = 
-              `High Risk: ${data.risk_summary.red} clauses\n` +
-              `Moderate Risk: ${data.risk_summary.yellow} clauses\n` +
-              `Safe: ${data.risk_summary.green} clauses`;
-          }
-          if (highlightedPdfLink) highlightedPdfLink.href = data.highlighted_pdf;
-          if (summaryPdfLink) summaryPdfLink.href = data.summary_pdf;
-          
-          if (resultsArea) resultsArea.style.display = "block";
-          if (dropArea) dropArea.innerHTML = `<p class="upload-desc">✅ Analysis complete. Upload another file.</p>`;
-        } else {
-          alert("❌ Analysis Error: " + data.error);
-          if (dropArea) dropArea.innerHTML = `<p class="upload-desc">❌ Error. Please try again.</p>`;
-        }
-      })
-      .catch((err) => {
-        console.error("Upload failed:", err);
-        alert("⚠️ Upload failed: " + (err.error || err.message));
-        if (dropArea) dropArea.innerHTML = `<p class="upload-desc">⚠️ Upload failed. Check connection.</p>`;
-      });
-  }
-
-  function stopCamera() {
-    if (stream) {
-      stream.getTracks().forEach((track) => track.stop());
+    if (!file) {
+      alert("No file provided.");
+      return;
     }
-    if (video) video.srcObject = null;
-  }
+    if (!file.type.startsWith("application/pdf") && !file.type.startsWith("image/")) {
+      alert("Please select a valid PDF or Image file.");
+      return;
+    }
 
-  function openCameraModal() {
-    if (!cameraModal || !video || !canvas) return;
-    cameraModal.style.display = "flex";
-    if (scanResultMsg) scanResultMsg.innerText = "";
-    canvas.style.display = "none";
-    video.style.display = "block";
-    if (captureBtn) captureBtn.style.display = "inline-block";
-    if (retakeBtn) retakeBtn.style.display = "none";
-    if (saveBtn) saveBtn.style.display = "none";
-
-    navigator.mediaDevices
-      .getUserMedia({ video: { facingMode: "environment" } })
-      .then((s) => {
-        stream = s;
-        video.srcObject = s;
-        video.play();
-      })
-      .catch((err) => {
-        if (scanResultMsg) {
-            scanResultMsg.style.color = "red";
-            scanResultMsg.innerText = "Error accessing camera: " + err.message;
-        }
-        if (captureBtn) captureBtn.style.display = "none";
-      });
+    lastUploadedFile = file;
+    // MODIFIED: Simplified message for when a file is selected
+    dropArea.innerHTML = `<p class="upload-success">"${file.name}" is ready. <br>Click "Get Started Instantly" to analyze.</p>`;
   }
   
-  function showAuthForm(mode) {
-    if (!authModal) return;
-    authModal.style.display = "flex";
-    if (mode === "signIn") {
-      if (authTitle) authTitle.innerText = "Sign In";
-      if (switchAuthMode) switchAuthMode.innerHTML = 'New user? <a href="#" id="signUpLink">Sign Up</a>';
-    } else {
-      if (authTitle) authTitle.innerText = "Sign Up";
-      if (switchAuthMode) switchAuthMode.innerHTML = 'Already have an account? <a href="#">Sign In</a>';
-    }
-  }
+  // --- Initial Event Listeners for Upload ---
+  let fileElem = document.getElementById("fileElem");
+  if (fileElem) fileElem.addEventListener("change", () => handleFiles(fileElem.files));
 
-  function addRippleEffect(btn) {
-    btn.addEventListener('click', function (e) {
-      const ripple = document.createElement('span');
-      ripple.classList.add('btn-ripple');
-      let rect = btn.getBoundingClientRect();
-      ripple.style.width = ripple.style.height = Math.max(rect.width, rect.height) + 'px';
-      ripple.style.left = (e.clientX - rect.left - rect.width / 2) + 'px';
-      ripple.style.top = (e.clientY - rect.top - rect.height / 2) + 'px';
-      this.appendChild(ripple);
-      setTimeout(() => ripple.remove(), 600);
-    });
-  }
-
-  // --- Event Listeners ---
-
-  // FAQ Accordion
-  if (faqQuestions) {
-    faqQuestions.forEach(function (q) {
-      q.addEventListener("click", function () {
-        const ans = this.nextElementSibling;
-        const isVisible = ans.style.display === "block";
-        document.querySelectorAll(".faq-answer").forEach((a) => (a.style.display = "none"));
-        ans.style.display = isVisible ? "none" : "block";
-      });
-    });
-  }
-
-  // Drag & Drop Upload
-  if (dropArea && fileElem) {
-    dropArea.addEventListener("click", () => fileElem.click());
-    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+  if (dropArea) {
+    ["dragenter", "dragover", "dragleave", "drop"].forEach(eventName => {
       dropArea.addEventListener(eventName, e => {
         e.preventDefault();
         e.stopPropagation();
-        if (eventName === 'dragenter' || eventName === 'dragover') {
-            dropArea.classList.add("drag-active");
-        } else {
-            dropArea.classList.remove("drag-active");
-        }
-      }, false);
+        dropArea.classList.toggle("drag-active", eventName === "dragenter" || eventName === "dragover");
+      });
     });
-    dropArea.addEventListener("drop", (e) => handleFiles(e.dataTransfer.files));
-    fileElem.addEventListener("change", () => handleFiles(fileElem.files));
+    dropArea.addEventListener("drop", e => handleFiles(e.dataTransfer.files));
+  }
+  
+  // NEW: Function to reset the UI for a new upload
+  function resetForNewUpload() {
+      dropArea.innerHTML = originalDropAreaHTML;
+      lastUploadedFile = null;
+      analysisSection.style.display = 'none';
+      
+      // We must re-find the new file input element after resetting the HTML and re-attach its listener
+      let newFileElem = document.getElementById("fileElem");
+      if (newFileElem) {
+        newFileElem.addEventListener("change", () => handleFiles(newFileElem.files));
+      }
   }
 
-  // Camera Scan Logic
+  // --- Tab Switching Logic (Unchanged) ---
+  const tabsContainer = analysisSection.querySelector('.tabs');
+  if (tabsContainer) {
+    tabsContainer.addEventListener('click', (e) => {
+      if (e.target.classList.contains('tab-button')) {
+        const tabName = e.target.dataset.tab;
+        
+        analysisSection.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+        e.target.classList.add('active');
+        
+        analysisSection.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        analysisSection.querySelector(`#${tabName}-content`).classList.add('active');
+      }
+    });
+  }
+
+  // --- Analysis API Call (MODIFIED with new UI enhancements) ---
+  if (getStartedBtn) {
+    getStartedBtn.addEventListener("click", () => {
+      if (!lastUploadedFile) {
+        alert("Please upload or scan a document before starting analysis.");
+        return;
+      }
+
+      // MODIFIED: Use the new animated loader
+      dropArea.innerHTML = `
+        <div class="loading-container">
+          <span>Analyzing your document</span>
+          <div class="loading-dots">
+            <span>.</span><span>.</span><span>.</span>
+          </div>
+        </div>`;
+      
+      analysisSection.style.display = 'none';
+
+      const formData = new FormData();
+      formData.append("file", lastUploadedFile);
+
+      fetch("http://127.0.0.1:5000/analyze", {
+        method: "POST",
+        body: formData,
+      })
+      .then(response => {
+        if (!response.ok) return response.json().then(err => { throw new Error(err.error) });
+        return response.json();
+      })
+      .then(data => {
+        if (data.success) {
+          populateResults(data);
+          analysisSection.style.display = 'block';
+          
+          // MODIFIED: Use the new success message with "Upload Another" button
+          dropArea.innerHTML = `
+            <div class="upload-success-box">
+              <h4>✅ Analysis Complete!</h4>
+              <p>Your results are ready below.</p>
+              <button id="upload-another-btn">Upload Another Document</button>
+            </div>
+          `;
+          // NEW: Add event listener for the new button
+          document.getElementById('upload-another-btn').addEventListener('click', resetForNewUpload);
+
+        } else {
+          throw new Error(data.error);
+        }
+      })
+      .catch(error => {
+        console.error("Analysis failed:", error);
+        alert(`❌ Analysis Error: ${error.message}`);
+        dropArea.innerHTML = `<p class="upload-error">❌ Error occurred. Please try again.</p>`;
+      });
+    });
+  }
+  
+  // --- UI Population Functions (Unchanged) ---
+  function populateResults(data) { /* ... This function is unchanged ... */ }
+  function populateChart(riskSummary, totalClauses) { /* ... This function is unchanged ... */ }
+  function populateClauses(clauses) { /* ... This function is unchanged ... */ }
+    // Full function definitions are included below for completeness
+    function populateResults(data) { analysisSection.querySelector("#analysis-filename").textContent = `Analysis for: ${lastUploadedFile.name}`; analysisSection.querySelector("#highlightedPreview").src = data.highlighted_pdf; analysisSection.querySelector("#highlightedDownload").href = data.highlighted_pdf; analysisSection.querySelector("#summaryPreview").src = data.summary_pdf; analysisSection.querySelector("#summaryDownload").href = data.summary_pdf; populateChart(data.risk_summary, data.total_clauses); populateClauses(data.detailed_results); }
+    function populateChart(riskSummary, totalClauses) { const chartElement = analysisSection.querySelector("#risk-chart"); const legendElement = analysisSection.querySelector("#chart-legend"); analysisSection.querySelector("#total-clauses-chart").textContent = totalClauses; const colors = { red: '#dc3545', yellow: '#ffc107', green: '#28a740' }; const labels = { red: 'High Risk', yellow: 'Moderate Risk', green: 'Safe' }; let gradientString = 'conic-gradient('; let legendHTML = ''; let currentDegree = 0; ['red', 'yellow', 'green'].forEach(key => { if (riskSummary[key] > 0) { const percentage = (riskSummary[key] / totalClauses) * 100; const nextDegree = currentDegree + (percentage * 3.6); gradientString += `${colors[key]} ${currentDegree}deg ${nextDegree}deg, `; legendHTML += `<div class="legend-item"><div class="legend-color" style="background-color: ${colors[key]};"></div><span>${labels[key]}: ${riskSummary[key]}</span></div>`; currentDegree = nextDegree; } }); gradientString = gradientString.slice(0, -2) + ')'; if (currentDegree === 0) { gradientString = 'conic-gradient(#E9ECEF 0deg 360deg)'; } chartElement.style.background = gradientString; legendElement.innerHTML = legendHTML; }
+    function populateClauses(clauses) { const clauseListElement = analysisSection.querySelector("#clause-list"); if (!clauses || clauses.length === 0) { clauseListElement.innerHTML = "<p>No detailed clause analysis available.</p>"; return; } const riskStyles = { red: { label: 'High Risk', color: '#dc3545' }, yellow: { label: 'Moderate Risk', color: '#ffc107' }, green: { label: 'Safe', color: '#28a740' } }; let clausesHTML = clauses.map((clause, index) => { const riskLevel = clause.classification?.risk_level || 'yellow'; const style = riskStyles[riskLevel]; const reasoning = clause.classification?.reasoning || clause.text; return `<div class="clause-item"><div class="clause-header">Clause ${index + 1}<span class="risk-tag" style="background-color:${style.color};">${style.label}</span></div><p class="clause-text">${reasoning}</p></div>`; }).join(''); clauseListElement.innerHTML = clausesHTML; }
+
+  // --- Camera Functionality (Unchanged) ---
   if (scanNowBtn) {
-    scanNowBtn.addEventListener("click", () => {
-        const isMobile = /Mobi|Android/i.test(navigator.userAgent);
-        if (isMobile && scanInput) {
-            scanInput.click();
-        } else {
-            openCameraModal();
-        }
-    });
+    scanNowBtn.addEventListener('click', openCameraModal);
   }
-  if (scanInput) {
-    scanInput.addEventListener("change", (e) => {
-        const file = e.target.files[0];
-        if (file) alert(`Scanned file: ${file.name} (${(file.size / 1024).toFixed(2)} KB)`);
-        scanInput.value = "";
-    });
-  }
-  if (closeCameraBtn) closeCameraBtn.addEventListener("click", () => {
-    stopCamera();
-    if (cameraModal) cameraModal.style.display = "none";
-  });
-  if (captureBtn) captureBtn.addEventListener("click", () => {
-    if (!canvas || !video) return;
-    const context = canvas.getContext("2d");
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
-    canvas.style.display = "block";
-    video.style.display = "none";
-    captureBtn.style.display = "none";
-    if (retakeBtn) retakeBtn.style.display = "inline-block";
-    if (saveBtn) saveBtn.style.display = "inline-block";
-    if (scanResultMsg) scanResultMsg.innerText = "";
-  });
-  if (retakeBtn) retakeBtn.addEventListener("click", () => {
-    if (scanResultMsg) scanResultMsg.innerText = "";
-    if (canvas) canvas.style.display = "none";
-    if (video) video.style.display = "block";
-    if (captureBtn) captureBtn.style.display = "inline-block";
-    retakeBtn.style.display = "none";
-    if (saveBtn) saveBtn.style.display = "none";
-  });
-  if (saveBtn) saveBtn.addEventListener("click", () => {
-    if (!canvas) return;
-    canvas.toBlob((blob) => {
-        if (!blob) {
-            if(scanResultMsg) {
-                scanResultMsg.style.color = "red";
-                scanResultMsg.innerText = "Could not save scan.";
-            }
-            return;
-        }
-        alert(`Scanned image saved. Size: ${(blob.size / 1024).toFixed(2)} KB`);
-        stopCamera();
-        if (cameraModal) cameraModal.style.display = "none";
-    }, "image/jpeg", 0.95);
-  });
+  function openCameraModal() { /* ... This function is unchanged ... */ }
+    // Full function definition is included below for completeness
+    function openCameraModal() { if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { alert("Camera API is not supported by your browser."); return; } const modalOverlay = document.createElement('div'); modalOverlay.className = 'camera-modal-overlay'; modalOverlay.innerHTML = `<div class="camera-modal-content"><h3>Scan Document</h3><video id="camera-view" autoplay playsinline></video><canvas id="capture-canvas"></canvas><div class="camera-controls"><button class="camera-btn capture-btn">Capture</button><button class="camera-btn retake-btn">Retake</button><button class="camera-btn save-btn">Save</button><button class="camera-btn close-btn">Close</button></div></div>`; document.body.appendChild(modalOverlay); const video = document.getElementById('camera-view'); const canvas = document.getElementById('capture-canvas'); const captureBtn = modalOverlay.querySelector('.capture-btn'); const retakeBtn = modalOverlay.querySelector('.retake-btn'); const saveBtn = modalOverlay.querySelector('.save-btn'); const closeBtn = modalOverlay.querySelector('.close-btn'); let stream = null; navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } }).then(s => { stream = s; video.srcObject = stream; modalOverlay.classList.add('visible'); }).catch(err => { console.error("Camera Error:", err); alert("Could not access the camera. Please ensure you have given permission."); document.body.removeChild(modalOverlay); }); const closeModal = () => { if (stream) { stream.getTracks().forEach(track => track.stop()); } document.body.removeChild(modalOverlay); }; captureBtn.addEventListener('click', () => { canvas.width = video.videoWidth; canvas.height = video.videoHeight; canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height); video.style.display = 'none'; canvas.style.display = 'block'; captureBtn.style.display = 'none'; retakeBtn.style.display = 'inline-block'; saveBtn.style.display = 'inline-block'; }); retakeBtn.addEventListener('click', () => { video.style.display = 'block'; canvas.style.display = 'none'; captureBtn.style.display = 'inline-block'; retakeBtn.style.display = 'none'; saveBtn.style.display = 'none'; }); saveBtn.addEventListener('click', () => { canvas.toBlob(blob => { const timestamp = new Date().toISOString().replace(/[-:.]/g, ''); const fileName = `scan_${timestamp}.jpeg`; const scannedFile = new File([blob], fileName, { type: 'image/jpeg' }); handleFiles([scannedFile]); closeModal(); }, 'image/jpeg', 0.9); }); closeBtn.addEventListener('click', closeModal); }
 
-  // Auth Modal Logic
-  if (signInShow) signInShow.onclick = () => showAuthForm("signIn");
-  if (signUpShow) signUpShow.onclick = () => showAuthForm("signUp");
-  if (closeAuth) closeAuth.onclick = () => (authModal.style.display = "none");
-  if (switchAuthMode) switchAuthMode.onclick = () => authTitle.innerText === "Sign In" ? showAuthForm("signUp") : showAuthForm("signIn");
-  if (signUpLink) signUpLink.addEventListener("click", (e) => {
-    e.preventDefault();
-    showAuthForm("signUp");
-  });
-  if (authForm) authForm.onsubmit = function (e) {
-    e.preventDefault();
-    alert("Auth action successful (mock)!");
-    authModal.style.display = "none";
+
+  // ==========================================================
+  // --- NEW: AUTHENTICATION MODAL LOGIC ---
+  // ==========================================================
+  const signInShowBtn = document.getElementById('signInShow');
+  const signUpShowBtn = document.getElementById('signUpShow');
+  
+  const signInModal = document.getElementById('signInModal');
+  const signUpModal = document.getElementById('signUpModal');
+
+  const switchToSignUpLink = document.getElementById('switchToSignUp');
+  const switchToSignInLink = document.getElementById('switchToSignIn');
+
+  // Function to close all modals
+  const closeAllModals = () => {
+    document.querySelectorAll('.auth-modal-overlay').forEach(modal => {
+      modal.classList.remove('visible');
+    });
   };
-  if(btnGoogle) btnGoogle.onclick = () => alert("Google Sign In/Up (mock - integrate real API for production!)");
-  if(btnPhone) btnPhone.onclick = () => alert("Phone OTP Sign In/Up (mock - integrate real API for production!)");
 
-  // Add Ripple Effect to buttons
-  document.querySelectorAll('.nav-btn, .modal-action-btn, .btn-google, .btn-phone, .get-started-btn, .scan-circular-btn').forEach(addRippleEffect);
+  // Open Sign In Modal
+  if (signInShowBtn) {
+    signInShowBtn.addEventListener('click', () => {
+      closeAllModals();
+      if (signInModal) signInModal.classList.add('visible');
+    });
+  }
 
+  // Open Sign Up Modal
+  if (signUpShowBtn) {
+    signUpShowBtn.addEventListener('click', () => {
+      closeAllModals();
+      if (signUpModal) signUpModal.classList.add('visible');
+    });
+  }
+  
+  // Switch from Sign In to Sign Up
+  if (switchToSignUpLink) {
+    switchToSignUpLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeAllModals();
+      if (signUpModal) signUpModal.classList.add('visible');
+    });
+  }
+
+  // Switch from Sign Up to Sign In
+  if (switchToSignInLink) {
+    switchToSignInLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeAllModals();
+      if (signInModal) signInModal.classList.add('visible');
+    });
+  }
+
+  // Add close functionality to all modals
+  document.querySelectorAll('.auth-modal-overlay').forEach(modal => {
+    const closeBtn = modal.querySelector('.close-btn');
+    
+    // Close with the 'x' button
+    if (closeBtn) {
+      closeBtn.addEventListener('click', closeAllModals);
+    }
+    
+    // Close by clicking on the background overlay
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeAllModals();
+      }
+    });
+  });
 });

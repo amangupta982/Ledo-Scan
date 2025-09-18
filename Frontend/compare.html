@@ -7,7 +7,7 @@
   <title>Document Compare</title>
   <link rel="stylesheet" href="compare.css" />
 </head>
-<!-- Navbar (copied design from first page) -->
+<!-- Navbar (copied de\sign from first page) -->
 <nav id="navbar">
   <div class="logo">LedoScan</div>
 
@@ -15,6 +15,7 @@
     <li><a href="main.html">Home</a></li>
     <li><a href="compare.html" class="active" aria-current="page">Compare</a></li>
     <li><a href="document.html">Document</a></li>
+    <li><a href="connect.html" >Connect</a></li>
     <li><a href="about.html">About</a></li>
   </ul>
 
@@ -50,7 +51,7 @@
               <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3l4 4h-3v6h-2V7H8l4-4Zm-7 14h14v2H5v-2Z"/></svg>
               Upload File
             </button>
-            <input id="file1" type="file" accept=".txt,.md,.csv,.json" class="hidden-input" />
+            <input id="file1" type="file" accept=".txt,.md,.csv, .pdf, .json" class="hidden-input" />
           </div>
 
           <div class="dropzone" id="drop1" tabindex="0" aria-label="Drop files for Document 1">
@@ -77,7 +78,7 @@
               <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3l4 4h-3v6h-2V7H8l4-4Zm-7 14h14v2H5v-2Z"/></svg>
               Upload File
             </button>
-            <input id="file2" type="file" accept=".txt,.md,.csv,.json" class="hidden-input" />
+            <input id="file2" type="file" accept=".txt,.md,.csv, .pdf, .json" class="hidden-input" />
           </div>
 
           <div class="dropzone" id="drop2" tabindex="0" aria-label="Drop files for Document 2">
@@ -102,9 +103,6 @@
       <h2 class="section-title">Results</h2>
 
       <div class="legend">
-        <span class="tag added">Added</span>
-        <span class="tag removed">Removed</span>
-        <span class="tag modified">Modified</span>
       </div>
 
       <div class="preview-grid">
@@ -151,7 +149,7 @@
         <div class="why-card">
           <div class="why-icon">🗂</div>
           <h3>Multiple Formats</h3>
-          <p>Supports common text formats like TXT, MD, CSV, and JSON for quick side‑by‑side checks.</p>
+          <p>Supports common text formats like TXT, MD, PDF, CSV, and JSON for quick side‑by‑side checks.</p>
         </div>
         <div class="why-card">
           <div class="why-icon">✔</div>
@@ -167,7 +165,7 @@
 
       <details>
         <summary>What file types are supported?</summary>
-        <p>Text formats such as .txt, .md, .csv, and .json are supported for preview and dummy comparisons.</p>
+        <p>Text formats such as .txt, .md, .pdf, .csv, and .json are supported for preview and dummy comparisons.</p>
       </details>
 
       <details>

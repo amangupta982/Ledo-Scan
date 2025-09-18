@@ -1,147 +1,127 @@
 /* Reset */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
 }
 
-/* Navbar */
+body {
+    background: #f9fafb;
+}
+
+/* --- NAVBAR CSS --- */
 .navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background: white;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+    display: flex;
+    align-items: center;
+    padding: 0.6em 2em;
+    background: #fff;
+    box-shadow: 0 2px 12px #e5e5e588;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 .logo {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #2563eb;
+    font-weight: bold;
+    color: #2563eb;
+    font-size: 1.22em;
+    letter-spacing: 1px;
 }
 
 .nav-links {
-  display: flex;
-  gap: 2rem;
+    list-style: none;
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    gap: 1.15em;
+    margin: 0;
+    padding: 0;
 }
 
 .nav-links a {
-  text-decoration: none;
-  color: black;
-  font-weight: 500;
-  padding: 6px 14px;
-  border-radius: 20px;
-  transition: 0.3s;
+    color: #222;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.46em 1.05em;
+    border-radius: 20px;
+    transition: background 0.2s, color 0.2s;
 }
 
 .nav-links a:hover,
 .nav-links a.active {
-  background: linear-gradient(to right, #2563eb, #1d4ed8);
-  color: white;
+    background: linear-gradient(90deg, #38bdf8, #6366f1 60%);
+    color: #fff;
 }
 
-/* Hero */
+/* --- NAVBAR BUTTON STYLES --- */
+.nav-buttons {
+    display: flex;
+    gap: 0.8em;
+}
+
+.btn-nav-outline, .btn-nav-solid {
+    padding: 0.5em 1.2em;
+    border-radius: 20px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    border: 2px solid #2563eb;
+    font-size: 0.95em;
+    background-color: transparent;
+}
+
+.btn-nav-outline {
+    color: #2563eb;
+}
+
+.btn-nav-outline:hover {
+    background-color: #2563eb;
+    color: #fff;
+}
+
+.btn-nav-solid {
+    background-color: #2563eb;
+    color: #fff;
+}
+
+.btn-nav-solid:hover {
+    background-color: #1d4ed8;
+    border-color: #1d4ed8;
+}
+
+/* --- Hero Section for About Page -- EDITED THIS SECTION --- */
 .hero {
-  text-align: center;
-  padding: 4rem 2rem;
-  background: #f9fafb;
+    text-align: center;
+    /* Matched padding from Home page for consistent height */
+    padding: 5em 1em 3.2em 1em;
 }
 
 .section-title {
-  font-size: 2.5rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
-}
-
-.black-text {
-  color: black;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
 }
 
 .blue-text {
-  color: #2563eb;
-}
-
-.hero p {
-  font-size: 1.2rem;
-  color: #6b7280;
-  max-width: 700px;
-  margin: 0 auto;
+    color: #2563eb;
 }
 
 /* Content sections */
 .content-section {
-  text-align: center;
-  padding: 3rem 2rem;
-  background: #f9fafb;
+    text-align: center;
+    padding: 3rem 2rem;
 }
 
 .content-section h3 {
-  font-size: 1.8rem;
-  margin-bottom: 1rem;
-  font-weight: bold;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
 }
 
 .content-section p {
-  max-width: 700px;
-  margin: 0 auto;
-  color: #374151;
-  line-height: 1.6;
-}
-
-/* Features */
-.features {
-  text-align: center;
-  padding: 3rem 2rem;
-}
-
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-  margin-top: 2rem;
-}
-
-.feature-card {
-  background: white;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s ease;
-}
-
-.feature-card:hover {
-  transform: translateY(-5px);
-}
-
-.feature-card strong {
-  display: block;
-  font-size: 1.2rem;
-  margin: 0.5rem 0;
-}
-
-.feature-card p {
-  color: #6b7280;
-  font-size: 0.95rem;
-}
-
-/* CTA button */
-.cta-btn {
-  margin-top: 1.5rem;
-  padding: 0.75rem 1.5rem;
-  background: linear-gradient(to right, #2563eb, #1d4ed8);
-  color: white;
-  border: none;
-  border-radius: 25px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.cta-btn:hover {
-  background: linear-gradient(to right, #1d4ed8, #2563eb);
+    max-width: 700px;
+    margin: 0 auto;
+    color: #374151;
+    line-height: 1.6;
 }

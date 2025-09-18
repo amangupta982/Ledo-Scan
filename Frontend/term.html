@@ -3,113 +3,234 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LedoScan - Terms and Conditions</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>LedoScan Terms and Conditions</title>
+    
     <style>
+        /* --- ALL YOUR CSS IS NOW HERE --- */
+
+        /* Basic Body Styles */
         body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(to bottom right, #e0f2fe, #fff1f2);
-            min-height: 100vh;
-            color: #1a202c;
+            font-family: 'Inter', sans-serif, Arial;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 0;
         }
+
+        /* Modal Overlay - MODIFIED to be visible by default */
+        .modal-overlay {
+            display: block; /* EDITED: Was 'none', now 'block' to show on load */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+        }
+
+        /* Modal Content Box */
+        .modal-content {
+            background-color: #ffffff;
+            margin: 5% auto;
+            padding: 20px 30px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 700px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+            text-align: left;
+            max-height: 80vh; /* Set a max height */
+            overflow-y: auto; /* Make it scrollable */
+        }
+
+        /* Close Button */
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: #000;
+            text-decoration: none;
+        }
+
+        /* Terms and Conditions Specific Styles */
+        .modal-content h1 {
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 1em;
+        }
+
+        .modal-content .blue-text {
+            color: #2563eb;
+        }
+
+        .terms-section {
+            margin-bottom: 1.5em;
+        }
+
+        .terms-section h2 {
+            font-size: 1.5em;
+            color: #2563eb;
+            margin-bottom: 0.5em;
+        }
+
+        .terms-section p {
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .terms-section .font-semibold {
+            font-weight: 600;
+        }
+
+        .terms-section .mb-4 {
+            margin-bottom: 1rem;
+        }
+
+        /* --- STYLES FOR BUTTONS --- */
+        .modal-actions {
+            text-align: right;
+            margin-top: 2em;
+            padding-top: 1em;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .modal-actions button {
+            padding: 0.6em 1.2em;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            margin-left: 0.5em;
+            transition: background-color 0.2s;
+        }
+
+        #accept-terms-btn {
+            background-color: #2563eb;
+            color: white;
+        }
+        #accept-terms-btn:hover {
+            background-color: #1d4ed8;
+        }
+
+        #decline-terms-btn {
+            background-color: #e5e7eb;
+            color: #374151;
+        }
+        #decline-terms-btn:hover {
+            background-color: #d1d5db;
+        }
+
     </style>
 </head>
-<body class="p-8">
+<body>
 
-    <!-- Header Section -->
-    <header class="flex justify-between items-center py-4 bg-white shadow-sm rounded-t-2xl px-6">
-        <!-- Logo -->
-        <div class="text-2xl font-bold text-blue-600">LedoScan</div>
+    <!-- The Modal structure which will now show immediately -->
+    <div id="terms-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h1><span class="blue-text">Terms</span> and Conditions</h1>
+            
+            <div class="terms-section">
+                <h2>1. Acceptance of Terms</h2>
+                <p>By accessing and using LedoScan ("the Service"), you accept and agree to be bound by these Terms and Conditions. If you do not agree to these terms, please do not use the Service.</p>
+            </div>
+    
+            <div class="terms-section">
+                <h2>2. Description of Service</h2>
+                <p>LedoScan provides an automated analysis of legal and other documents using artificial intelligence. The Service is intended to simplify complex text, identify key clauses, and provide summaries. It is an informational tool, not a legal service.</p>
+            </div>
 
-        <!-- Navigation Menu -->
-        <nav class="flex space-x-8 text-gray-700 font-medium">
-            <a href="main.html" class="hover:text-black transition-colors">Home</a>
-            <a href="compare.html" class="hover:text-black transition-colors">Compare</a>
-            <a href="document.html" class="hover:text-black transition-colors">Document</a>
-            <a href="About.html" class="hover:text-black transition-colors">About</a>
-        </nav>
+            <div class="terms-section">
+                <h2>3. User Responsibilities and Risk</h2>
+                <p class="font-semibold">User-Uploaded Content:</p>
+                <p class="mb-4">You are solely responsible for the documents you upload. You must ensure that you have the legal right to upload and process the content and that it does not infringe on any third-party rights (e.g., copyright, privacy).</p>
+                <p class="font-semibold">Assumption of Risk:</p>
+                <p>You acknowledge that you are using the Service and uploading documents **at your own risk**. We are not liable for any data breaches, loss, or exposure of sensitive information contained within your documents. Do not upload documents with highly confidential or personal information if you are not willing to assume this risk.</p>
+            </div>
+            
+            <div class="terms-section">
+                <h2>4. Accuracy and Limitation of Liability</h2>
+                <p class="font-semibold">No Guarantee of Accuracy:</p>
+                <p class="mb-4">The analysis and summaries provided by the Service are generated by an AI and are for informational purposes only. We do not guarantee that the output is 100% accurate, complete, or free of errors and omissions. The analysis may misinterpret complex legal nuances.</p>
+                <p class="font-semibold">Not Legal Advice:</p>
+                <p class="mb-4">LedoScan is not a substitute for professional legal advice. The information provided does not constitute a legal opinion. You should always consult with a qualified legal professional for advice on your specific situation.</p>
+                <p class="font-semibold">Limitation of Liability:</p>
+                <p>In no event shall LedoScan or its affiliates be liable for any direct, indirect, incidental, or consequential damages resulting from the use or inability to use the Service, even if we have been advised of the possibility of such damages.</p>
+            </div>
+            
+            <div class="terms-section">
+                <h2>5. Data Privacy and Security</h2>
+                 <p class="font-semibold">Data Handling:</p>
+                <p class="mb-4">We are committed to protecting your privacy. Uploaded documents are processed for the sole purpose of providing the Service to you. We will not sell or share your documents with third parties, except as required by law.</p>
+                 <p class="font-semibold">Data Retention:</p>
+                <p>To protect your privacy, all uploaded documents and their generated analyses will be automatically and permanently deleted from our servers after 24 hours.</p>
+            </div>
 
-        <!-- Auth Buttons -->
-        <div class="flex space-x-4">
-         
+            <div class="terms-section">
+                <h2>6. Termination of Use</h2>
+                <p>We reserve the right to suspend or terminate your access to the Service at our sole discretion, without notice, for conduct that we believe violates these Terms and Conditions or is otherwise harmful to other users of the Service, us, or third parties.</p>
+            </div>
+
+            <div class="terms-section">
+                <h2>7. Changes to Terms</h2>
+                <p>We may modify these Terms and Conditions at any time. We will notify you of any changes by posting the new terms on the Service. Your continued use of the Service after any such change constitutes your acceptance of the new terms.</p>
+            </div>
+
+            <!-- --- BUTTONS SECTION --- -->
+            <div class="modal-actions">
+                <button id="decline-terms-btn">Decline</button>
+                <button id="accept-terms-btn">I Accept</button>
+            </div>
+
         </div>
-    </header>
+    </div>
 
-    <!-- Main Content Section -->
-    <main class="container mx-auto max-w-4xl bg-white p-8 md:p-12 mt-12 rounded-2xl shadow-xl">
-        <h1 class="text-4xl font-extrabold text-gray-900 mb-8 text-center"><span class="text-blue-500">Terms</span> and Conditions</h1>
+    <script>
+        // --- ALL YOUR JAVASCRIPT IS NOW HERE ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('terms-modal');
+            const closeButton = document.querySelector('.close-button');
+            const acceptBtn = document.getElementById('accept-terms-btn');
+            const declineBtn = document.getElementById('decline-terms-btn');
 
-        <!-- Section 1 -->
-        <div class="mb-8">
-            <h2 class="text-2xl font-bold text-blue-500 mb-2">1. Acceptance of Terms</h2>
-            <p class="text-gray-600 leading-relaxed">By using the LedoScan service, you agree to these Terms and Conditions. If you do not agree, you may not use the service.</p>
-        </div>
+            // --- EDITED SCRIPT LOGIC ---
+            
+            if (acceptBtn) {
+                acceptBtn.addEventListener('click', () => {
+                    console.log('Terms and Conditions Accepted.');
+                    // Redirect to your main application page
+                    window.location.href = 'main.html'; 
+                });
+            }
 
-        <!-- Section 2 -->
-        <div class="mb-8">
-            <h2 class="text-2xl font-bold text-blue-500 mb-2">2. Service Description</h2>
-            <p class="text-gray-600 leading-relaxed">LedoScan is an online platform that simplifies and summarizes uploaded documents. It uses AI to analyze text complexity, provide color-coded feedback (red, yellow, green), generate summaries, and simplify complex language. The service also offers document comparison and a summary accuracy score.</p>
-        </div>
+            // Function for declining or closing the modal
+            const declineAndGoBack = () => {
+                console.log('Terms and Conditions Declined or Closed.');
+                // You can send the user to a different page or simply back.
+                // For this example, we'll just alert them.
+                alert('You must accept the terms to use the application.');
+                // In a real app, you might use: window.history.back();
+            };
 
-        <!-- Section 3 -->
-        <div class="mb-8">
-            <h2 class="text-2xl font-bold text-blue-500 mb-2">3. User Responsibilities</h2>
-            <p class="text-gray-600 leading-relaxed font-semibold">Data Accuracy:</p>
-            <p class="text-gray-600 leading-relaxed mb-4">You are solely responsible for the accuracy and legality of the documents you upload.</p>
-            <p class="text-gray-600 leading-relaxed font-semibold">Prohibited Content:</p>
-            <p class="text-gray-600 leading-relaxed mb-4">You may not upload documents that are illegal, infringe on copyrights, contain malicious code, or violate any laws.</p>
-            <p class="text-gray-600 leading-relaxed font-semibold">Personal Information:</p>
-            <p class="text-gray-600 leading-relaxed">Do not upload documents containing sensitive personal information (e.g., social security numbers, credit card details) unless you are the owner and accept the risk. We are not liable for the exposure of such data.</p>
-        </div>
+            if (declineBtn) {
+                declineBtn.addEventListener('click', declineAndGoBack);
+            }
+            
+            if (closeButton) {
+                closeButton.addEventListener('click', declineAndGoBack);
+            }
 
-        <!-- Section 4 -->
-        <div class="mb-8">
-            <h2 class="text-2xl font-bold text-blue-500 mb-2">4. Limitation of Liability and Accuracy Disclaimer</h2>
-            <p class="text-gray-600 leading-relaxed font-semibold">No Legal Advice:</p>
-            <p class="text-gray-600 leading-relaxed mb-4">The service provides simplified summaries and analysis for informational purposes only. It is not a substitute for professional legal, financial, or medical advice. You should consult a qualified professional for any critical decisions.</p>
-            <p class="text-gray-600 leading-relaxed font-semibold">Accuracy Disclaimer:</p>
-            <p class="text-gray-600 leading-relaxed mb-4">While we strive for high accuracy, the AI-generated summaries and simplifications may contain errors or misinterpretations. The system provides an accuracy percentage as a guide, but this is an estimate. We do not guarantee 100% accuracy.</p>
-            <p class="text-gray-600 leading-relaxed font-semibold">No Guarantees:</p>
-            <p class="text-gray-600 leading-relaxed">We do not guarantee that the service will be uninterrupted, error-free, or secure. We are not liable for any losses or damages resulting from the use of this service.</p>
-        </div>
+        });
+    </script>
 
-        <!-- Section 5 -->
-        <div class="mb-8">
-            <h2 class="text-2xl font-bold text-blue-500 mb-2">5. Data Privacy and Security</h2>
-            <p class="text-gray-600 leading-relaxed font-semibold">Confidentiality:</p>
-            <p class="text-gray-600 leading-relaxed mb-4">We are committed to protecting your privacy. We will not sell or share your documents or data with third parties without your explicit consent, except as required by law.</p>
-            <p class="text-gray-600 leading-relaxed font-semibold">Data Deletion:</p>
-            <p class="text-gray-600 leading-relaxed mb-4">Uploaded documents and their processed data will be automatically deleted from our servers after a specific period (e.g., 24 hours) or upon your request.</p>
-            <p class="text-gray-600 leading-relaxed font-semibold">Data Security:</p>
-            <p class="text-gray-600 leading-relaxed">We implement security measures to protect your data, but no system is completely immune to cyber threats.</p>
-        </div>
-
-        <!-- Section 6 -->
-        <div class="mb-8">
-            <h2 class="text-2xl font-bold text-blue-500 mb-2">6. Intellectual Property</h2>
-            <p class="text-gray-600 leading-relaxed font-semibold">User Content:</p>
-            <p class="text-gray-600 leading-relaxed mb-4">You retain all ownership rights to the documents you upload. By using the service, you grant us a limited, non-exclusive license to process your documents solely for the purpose of providing the service to you.</p>
-            <p class="text-gray-600 leading-relaxed font-semibold">LedoScan Content:</p>
-            <p class="text-gray-600 leading-relaxed">All content, software, and intellectual property on the LedoScan platform (excluding user-uploaded documents) are owned by us. You may not copy, reproduce, or distribute our intellectual property without permission.</p>
-        </div>
-
-        <!-- Section 7 -->
-        <div class="mb-8">
-            <h2 class="text-2xl font-bold text-blue-500 mb-2">7. Account and Termination</h2>
-            <p class="text-gray-600 leading-relaxed font-semibold">Account Creation:</p>
-            <p class="text-gray-600 leading-relaxed mb-4">You may need to create an account to use certain features. You are responsible for maintaining the confidentiality of your account password.</p>
-            <p class="text-gray-600 leading-relaxed font-semibold">Termination:</p>
-            <p class="text-gray-600 leading-relaxed">We reserve the right to suspend or terminate your access to the service at any time, with or without cause, including for a breach of these terms.</p>
-        </div>
-
-        <!-- Section 8 -->
-        <div class="mb-8">
-            <h2 class="text-2xl font-bold text-blue-500 mb-2">8. Governing Law</h2>
-            <p class="text-gray-600 leading-relaxed">These Terms and Conditions are governed by and construed in accordance with the laws of [Your Jurisdiction], without regard to its conflict of law principles.</p>
-        </div>
-    </main>
 </body>
 </html>
